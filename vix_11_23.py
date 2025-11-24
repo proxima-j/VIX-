@@ -16,7 +16,7 @@ START_DATE = "2010-01-01"
 END_DATE = None  # None => up to today
 VIX_THR = 15.0
 MA_WINDOW = 5
-TRADE_COST = 0.0005   # proportional cost per trade (0.05% default). Adjust as needed.
+TRADE_COST = 0.000   # proportional cost per trade (0.05% default). Adjust as needed.
 RISK_FREE = 0.0       # for Sharpe calculation
 RESAMPLE = None       # e.g. 'M' if you want monthly frequency; None for daily
 
@@ -62,10 +62,12 @@ df['NAV_strategy'] = (1 + df['strategy_ret']).cumprod()
 # === METRICS ===
 def annualized_return_from_nav(nav, periods_per_year=252):
     total_days = len(nav.dropna())
+    print(f"total days: {total_days}")
     if total_days < 2:
         return np.nan
     total_return = nav.iloc[-1] / nav.iloc[0] - 1
     years = total_days / periods_per_year
+    print(f"Years: {years}")
     if years <= 0:
         return np.nan
     return (1 + total_return) ** (1/years) - 1
